@@ -9,4 +9,13 @@ exports.addUserData = (req, res, next) => {
     next();
 };
 
-// Middleware untuk cek apakah user adalah admin
+// Middleware untuk cek apakah user adalah admin 
+exports.isAdmin = (req, res, next) => {
+    if (req.user && req.user.role === 'admin') {
+        console.log('Middleware: Izin admin diberikan.');
+        next();
+    } else {
+        console.log('Middleware: Gagal! Pengguna bukan admin.');
+        return res.status(403).json({ message: 'Akses ditolak: Hanya untuk admin' });
+    }
+};
