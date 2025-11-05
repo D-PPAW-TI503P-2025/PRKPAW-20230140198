@@ -5,39 +5,48 @@ const timeZone = "Asia/Jakarta";
 
 exports.getDailyReport = async (req, res) => {
     try {
-        const today = format(new Date(), "yyyy-MM-dd", { timeZone });
+        const { nama, tanggal } = req.query; // Contoh: ?nama=Yasin&tanggal=2025-11-01
+        let options = { where: {} };
 
-        // Ambil data dengan filter berdasarkan tanggal checkIn hari ini
-        const startOfDay = new Date(`${today}T00:00:00`);
-        const endOfDay = new Date(`${today}T23:59:59`);
+        // Filter berdasarkan nama 
+        if (nama) {
+        options.where.nama = {
+            [Op.like]: `%${nama}%`,
+        };
+        }
 
-        const dailyData = await Presensi.findAll({
-            where: {
-                checkIn: {
-                    [Op.between]: [startOfDay, endOfDay],
-                },
-            },
+        // Filter berdasarkan tanggal 
+        if (tanggal) {
+        const startOfDay = new Date(`${tanggal}T00:00:00.000Z`);
+        const endOfDay = new Date(`${tanggal}T23:59:59.999Z`);
+        options.where.checkIn = { [Op.between]: [startOfDay, endOfDay] };
+        }
+
+        // Urutkan dari checkIn terbaru
+        options.order = [["checkIn", "DESC"]];
+
+        // Ambil data dari database
+        const records = await Presensi.findAll(options);
+
+        if (records.length === 0) {
+        return res.status(404).json({
+            message: "Tidak ada data presensi ditemukan untuk filter yang diberikan.",
         });
+        }
 
-        // Format data untuk response
-        const formattedData = dailyData.map((record) => ({
-            userId: record.userId,
-            nama: record.nama,
-            checkIn: format(record.checkIn, "yyyy-MM-dd HH:mm:ssXXX", { timeZone }),
-            checkOut: record.checkOut
-                ? format(record.checkOut, "yyyy-MM-dd HH:mm:ssXXX", { timeZone })
-                : null,
-        }));
+        // Format tanggal laporan (1/11/2025)
+        const reportDate = new Date().toLocaleDateString("id-ID", { timeZone });
 
+        // Kirim hasil sesuai format yang kamu mau
         res.json({
-            message: `Laporan presensi tanggal ${today}`,
-            total: formattedData.length,
-            data: formattedData,
+        reportDate: reportDate,
+        total: records.length,
+        data: records, // biarkan data mentah tanpa format waktu agar seperti contohmu
         });
     } catch (error) {
         res.status(500).json({
-            message: "Terjadi kesalahan pada server saat mengambil laporan harian",
-            error: error.message,
+        message: "Gagal mengambil laporan presensi.",
+        error: error.message,
         });
     }
 };
