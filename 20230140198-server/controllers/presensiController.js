@@ -131,7 +131,7 @@ exports.updatePresensi = async (req, res) => {
 
         if (checkIn && !isValidDate(checkIn)) {
         return res.status(400).json({
-            message: "Format tanggal checkIn tidak valid. perhatikan tanggalnya",
+            message: "Format tanggal checkIn tidak valid.",
         });
         }
 
