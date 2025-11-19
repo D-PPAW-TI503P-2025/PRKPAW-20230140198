@@ -1,86 +1,71 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import "./AuthStyle.css";
 
-function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+const LoginPage = () => {
     const navigate = useNavigate();
 
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     const handleSubmit = async (e) => {
-        e.preventDefault(); 
-        setError(null); 
+        e.preventDefault();
 
         try {
-        
-        const response = await axios.post('http://localhost:3001/api/auth/login', {
-            email: email,
-            password: password
+        const response = await fetch("http://localhost:3001/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify({ email, password }),
         });
 
-        const token = response.data.token;
-        localStorage.setItem('token', token); 
+        const data = await response.json();
 
-        navigate('/dashboard');
+        if (response.ok) {
+            localStorage.setItem("token", data.token);
+            navigate("/dashboard");
+        } else {
+            alert(data.message || "Login gagal!");
+        }
 
-        } catch (err) {
-        // 4. Tangani error dari server
-        setError(err.response ? err.response.data.message : 'Login gagal');
+        } catch (error) {
+        console.error(error);
+        alert("Terjadi kesalahan server.");
         }
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-            <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-            Login
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-                <label 
-                htmlFor="email" 
-                className="block text-sm font-medium text-gray-700"
-                >
-                Email:
-                </label>
-                <input
-                id="email"
+        <div className="auth-container">
+        <div className="auth-card">
+            <h2 className="auth-title">Login</h2>
+
+            <form onSubmit={handleSubmit}>
+            <input 
                 type="email"
+                placeholder="Email"
+                className="auth-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-            </div>
-            <div>
-                <label 
-                htmlFor="password" 
-                className="block text-sm font-medium text-gray-700"
-                >
-                Password:
-                </label>
-                <input
-                id="password"
+            />
+
+            <input 
                 type="password"
+                placeholder="Password"
+                className="auth-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-            </div>
-            <button
-                type="submit"
-                className="w-full py-2 px-4 bg-pink-500 text-white font-semibold rounded-md shadow-sm hover:bg-pink-600"
-            >
-                Login
-            </button>
+            />
+
+            <button className="auth-btn">Login</button>
             </form>
-            {error && (
-            <p className="text-red-600 text-sm mt-4 text-center">{error}</p>
-            )}
+
+            <p className="auth-alt-text">
+            Belum punya akun? <span onClick={() => navigate('/register')}>Register</span>
+            </p>
         </div>
         </div>
     );
-}
+};
+
 export default LoginPage;
