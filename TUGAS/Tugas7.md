@@ -1,11 +1,11 @@
-# LAPORAN PRAKTIKUM 6 PAW 
+# LAPORAN PRAKTIKUM 7 PAW 
 > Nama  : Latfiansya Dzikri\
 > NIM   : 20230140198\
 > Kelas : D
 
 | Keterangan | Screenshot |
 | --- | --- |
-| Request POST /register untuk Mahasiswa  |<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/20f96d75-c9dd-434b-b2ea-1fc745327467" />|
+| RegisterPage |<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/3d97ff9b-7490-4781-8508-c95ac7ba5500" />|
 |  |  |
 | Request POST /register untuk Admin|<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/56469e0b-b356-48b9-8d9f-9514181e330d" />|
 |  |  |
