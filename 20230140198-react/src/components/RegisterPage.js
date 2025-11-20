@@ -25,13 +25,12 @@ const RegisterPage = () => {
         const res = await fetch("http://localhost:3001/api/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(form), // <-- mengirim { nama, role, email, password }
+            body: JSON.stringify(form), 
         });
 
         const data = await res.json();
 
         if (!res.ok) {
-            // tampilkan pesan error spesifik bila ada
             const msg = data.message || "Registrasi gagal!";
             alert(msg);
             setLoading(false);

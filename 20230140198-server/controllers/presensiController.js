@@ -2,6 +2,7 @@
 const { Presensi } = require("../models");
 const { format } = require("date-fns-tz");
 const timeZone = "Asia/Jakarta";
+const userId = req.user.id;
 
 exports.CheckIn = async (req, res) => {
   // 2. Gunakan try...catch untuk error handling
