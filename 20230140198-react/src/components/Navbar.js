@@ -1,16 +1,26 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {jwt_decode} from "jwt-decode";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // navbar tidak muncul di login & register
+    if (
+        location.pathname === "/" ||
+        location.pathname === "/login" ||
+        location.pathname === "/register"
+    ) {
+        return null;
+    }
 
     const token = localStorage.getItem("token");
     let user = null;
 
     if (token) {
         try {
-        user = jwt_decode(token);
+        user = jwtDecode(token);
         } catch (err) {
         console.log("Token tidak valid");
         }
@@ -22,19 +32,57 @@ const Navbar = () => {
     };
 
     return (
-        <nav style={{ padding: "15px", background: "#eee", marginBottom: "20px" }}>
-        <Link to="/dashboard" style={{ marginRight: "15px" }}>Dashboard</Link>
-        <Link to="/presensi" style={{ marginRight: "15px" }}>Presensi</Link>
+        <nav
+        style={{
+            width: "100%",
+            backgroundColor: "#ff2e86",      // PINK TUA
+            padding: "12px 20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            color: "white",
+        }}
+        >
+        {/* KIRI: Hai, Nama */}
+        <div style={{ fontWeight: "bold" }}>
+            Hai, {user ? user.nama : ""}
+        </div>
 
-        {user && user.role === "admin" && (
-            <Link to="/reports" style={{ marginRight: "15px" }}>Laporan Admin</Link>
-        )}
+        {/* TENGAH: Menu */}
+        <div style={{ display: "flex", gap: "25px" }}>
+            <Link style={{ color: "white", textDecoration: "none" }} to="/dashboard">
+            Dashboard
+            </Link>
 
-        <span style={{ marginRight: "20px" }}>
-            {user ? `Hai, ${user.nama}` : ""}
-        </span>
+            <Link style={{ color: "white", textDecoration: "none" }} to="/presensi">
+            Presensi
+            </Link>
 
-        <button onClick={handleLogout}>Logout</button>
+            {user && user.role === "admin" && (
+            <Link
+                style={{ color: "white", textDecoration: "none" }}
+                to="/reports"
+            >
+                Laporan Admin
+            </Link>
+            )}
+        </div>
+
+        {/* KANAN: Logout */}
+        <button
+            onClick={handleLogout}
+            style={{
+            backgroundColor: "white",
+            color: "#ff1975",
+            border: "none",
+            padding: "8px 15px",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontWeight: "bold",
+            }}
+        >
+            Logout
+        </button>
         </nav>
     );
 };

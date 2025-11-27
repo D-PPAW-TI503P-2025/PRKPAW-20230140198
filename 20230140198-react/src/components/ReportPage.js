@@ -12,26 +12,24 @@ function ReportPage() {
     const fetchReports = async (nama = "") => {
         const token = localStorage.getItem("token");
         if (!token) {
-        navigate("/login");
-        return;
+            navigate("/login");
+            return;
         }
 
         try {
-        const config = {
-            headers: {
-            Authorization: `Bearer ${token}`,
-            },
-        };
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
 
-        const res = await axios.get(
-            `http://localhost:3001/api/reports/daily?nama=${nama}`,
-            config
-        );
+            const res = await axios.get(
+                `http://localhost:3001/api/reports/daily?nama=${nama}`,
+                config
+            );
 
-        setReports(res.data.data);
-        setError(null);
+            setReports(res.data.data);
+            setError(null);
         } catch (err) {
-        setError("Gagal mengambil laporan");
+            setError("Gagal mengambil laporan");
         }
     };
 
@@ -46,47 +44,47 @@ function ReportPage() {
 
     return (
         <div style={{ padding: "20px" }}>
-        <h1>Laporan Presensi Harian</h1>
+            <h1>Laporan Presensi Harian</h1>
 
-        <form onSubmit={handleSearchSubmit}>
-            <input
-            type="text"
-            placeholder="Cari nama..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button type="submit">Cari</button>
-        </form>
+            <form onSubmit={handleSearchSubmit}>
+                <input
+                    type="text"
+                    placeholder="Cari nama..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button type="submit">Cari</button>
+            </form>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
-        {!error && (
-            <table border="1" cellPadding="6" style={{ marginTop: "20px" }}>
-            <thead>
-                <tr>
-                <th>Nama</th>
-                <th>Check-In</th>
-                <th>Check-Out</th>
-                </tr>
-            </thead>
+            {!error && (
+                <table border="1" cellPadding="6" style={{ marginTop: "20px" }}>
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Check-In</th>
+                            <th>Check-Out</th>
+                        </tr>
+                    </thead>
 
-            <tbody>
-                {reports.length > 0 ? (
-                reports.map((p) => (
-                    <tr key={p.id}>
-                    <td>{p.user ? p.user.nama : "N/A"}</td>
-                    <td>{p.checkIn}</td>
-                    <td>{p.checkOut ?? "Belum Check-Out"}</td>
-                    </tr>
-                ))
-                ) : (
-                <tr>
-                    <td colSpan="3">Tidak ada data</td>
-                </tr>
-                )}
-            </tbody>
-            </table>
-        )}
+                    <tbody>
+                        {reports.length > 0 ? (
+                            reports.map((p) => (
+                                <tr key={p.id}>
+                                    <td>{p.nama || "N/A"}</td>
+                                    <td>{p.checkIn}</td>
+                                    <td>{p.checkOut ?? "Belum Check-Out"}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="3">Tidak ada data</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 }
