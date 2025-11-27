@@ -9,8 +9,8 @@ exports.CheckIn = async (req, res) => {
     try {
         const { id: userId, nama: userName } = req.user;
         const waktuSekarang = new Date();
-
-        // 3. Ubah cara mencari data menggunakan 'findOne' dari Sequelize
+        const { latitude, longitude } = req.body;
+                // 3. Ubah cara mencari data menggunakan 'findOne' dari Sequelize
         const existingRecord = await Presensi.findOne({
             where: { userId: userId, checkOut: null },
         });
@@ -30,9 +30,9 @@ exports.CheckIn = async (req, res) => {
 
         const formattedData = {
             userId: newRecord.userId,
-            nama: newRecord.nama,
-            checkIn: format(newRecord.checkIn, "yyyy-MM-dd HH:mm:ssXXX", { timeZone }),
-            checkOut: null,
+            checkIn: waktuSekarang,
+            latitude: latitude || null,
+            longitude: longitude || null,
         };
 
         res.status(201).json({

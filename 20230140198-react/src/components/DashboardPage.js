@@ -1,24 +1,35 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./DashboardStyle.css";
+import "./../styles/AppTheme.css";
 
 const DashboardPage = () => {
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        navigate("/login");
-    };
-
     return (
-        <div className="dash-container">
-        <div className="dash-card">
-            <h1 className="dash-title">Dashboard</h1>
-            <p className="dash-sub">Selamat datang! 🎀</p>
+        <div className="app-container">
+        <div style={{marginTop:18}} className="dashboard-grid">
+            <div>
+            <div className="card">
+                <h3>Selamat datang di Dashboard</h3>
+                <p>Ringkasan cepat aktivitas presensi dan laporan.</p>
+                <div style={{marginTop:12}}>
+                <div style={{display:"flex", gap:12}}>
+                    <div className="card" style={{flex:1}}>
+                    <h4 style={{marginTop:0}}>Kehadiran Hari Ini</h4>
+                    <p style={{color:"var(--muted)"}}>Belum ada data realtime</p>
+                    </div>
+                    <div className="card" style={{width:260}}>
+                    <h4 style={{marginTop:0}}>Status Akun</h4>
+                    <p style={{color:"var(--muted)"}}>Aman & Terverifikasi</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
 
-            <button className="dash-btn" onClick={handleLogout}>
-            Logout
-            </button>
+            <aside>
+            <div className="card">
+                <h4>Notifikasi</h4>
+                <p style={{color:"var(--muted)"}}>Tidak ada notifikasi.</p>
+            </div>
+            </aside>
         </div>
         </div>
     );

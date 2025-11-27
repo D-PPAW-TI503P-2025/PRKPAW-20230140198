@@ -7,6 +7,9 @@ import Navbar from "./components/Navbar";
 import PresensiPage from "./components/PresensiPage";
 import ReportPage from "./components/ReportPage";
 
+import "./styles/AppTheme.css";
+
+
 function App() {
   return (
     <BrowserRouter>

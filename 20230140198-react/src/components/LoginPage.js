@@ -1,71 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./AuthStyle.css";
+import "./../styles/AppTheme.css";
 
 const LoginPage = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const [loading,setLoading] = useState(false);
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:3001/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        navigate("/dashboard");
+      } else {
+        alert(data.message || "Login gagal");
+      }
+    } catch (err) {
+      alert("Server error");
+    }
+    setLoading(false);
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  return (
+    <div className="auth-page">
+      <div className="auth-card" role="main" aria-labelledby="loginTitle">
+        <h2 id="loginTitle" className="auth-title">Masuk ke MyKampus</h2>
 
-        try {
-        const response = await fetch("http://localhost:3001/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify({ email, password }),
-        });
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <input className="input" placeholder="Email" type="email" value={email} onChange={(e)=>setEmail(e.target.value)} required />
+          </div>
 
-        const data = await response.json();
+          <div className="form-group">
+            <input className="input" placeholder="Password" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} required />
+          </div>
 
-        if (response.ok) {
-            localStorage.setItem("token", data.token);
-            navigate("/dashboard");
-        } else {
-            alert(data.message || "Login gagal!");
-        }
+          <div className="form-group">
+            <button className="btn-primary" type="submit" disabled={loading}>{loading ? "Masuk..." : "Masuk"}</button>
+          </div>
 
-        } catch (error) {
-        console.error(error);
-        alert("Terjadi kesalahan server.");
-        }
-    };
-
-    return (
-        <div className="auth-container">
-        <div className="auth-card">
-            <h2 className="auth-title">Login</h2>
-
-            <form onSubmit={handleSubmit}>
-            <input 
-                type="email"
-                placeholder="Email"
-                className="auth-input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-
-            <input 
-                type="password"
-                placeholder="Password"
-                className="auth-input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-
-            <button className="auth-btn">Login</button>
-            </form>
-
-            <p className="auth-alt-text">
-            Belum punya akun? <span onClick={() => navigate('/register')}>Register</span>
-            </p>
-        </div>
-        </div>
-    );
+          <div style={{textAlign:"center", color:"var(--muted)"}}>
+            Belum punya akun? <a href="/register" style={{ color: "#1877F2", fontWeight: 500 }}>Daftar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default LoginPage;

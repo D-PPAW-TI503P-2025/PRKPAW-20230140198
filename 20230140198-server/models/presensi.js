@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Presensi.belongsTo(models.User, { foreignKey: "userId" });
+      Presensi.belongsTo(models.User, { 
+        foreignKey: "userId",
+        as: "user"});
     }
   }
   Presensi.init({
@@ -20,8 +22,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    nama: {
-      type: DataTypes.STRING,
+    latitude: {
+        type: DataTypes.DECIMAL(10, 7),
+        allowNull: false,
+    },
+    longitude: {
+      type: DataTypes.DECIMAL(10, 7),
       allowNull: false,
     },
     checkIn: {

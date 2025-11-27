@@ -1,0 +1,194 @@
+:root{
+  --fb-blue-900: #0b57d0;
+  --fb-blue-700: #1877f2;
+  --fb-blue-500: #59a7ff;
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --accent: #1877f2;
+  --glass: rgba(255,255,255,0.65);
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --shadow-soft: 0 8px 30px rgba(16,24,40,0.08);
+  --shadow-sm: 0 4px 14px rgba(16,24,40,0.06);
+  --max-width: 980px;
+  --container-padding: 28px;
+  font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* page background */
+body, #root {
+  background: linear-gradient(180deg, var(--bg), #e9eefc 70%);
+  min-height: 100vh;
+  margin: 0;
+  color: #111827;
+}
+
+/* Container centered */
+.app-container {
+  max-width: var(--max-width);
+  margin: 28px auto;
+  padding: 0 var(--container-padding);
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: linear-gradient(90deg, var(--fb-blue-900), var(--fb-blue-700));
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-left {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width: 160px;
+}
+.brand {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.2px;
+}
+.hi-name { font-weight:600; color: #fff; }
+
+.nav-center {
+  display:flex;
+  gap:20px;
+  align-items:center;
+  justify-content:center;
+  flex:1;
+}
+.nav-center a {
+  color: rgba(255,255,255,0.95);
+  text-decoration:none;
+  padding:6px 10px;
+  border-radius:8px;
+  font-weight:600;
+}
+.nav-center a:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.nav-right {
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.btn-logout {
+  background: white;
+  color: var(--fb-blue-700);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+/* AUTH CARD (Login/Register) */
+.auth-page {
+  min-height: calc(100vh - 140px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 40px 20px;
+}
+.auth-card {
+  width: 420px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), var(--card));
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(16,24,40,0.04);
+}
+.auth-title {
+  text-align:center;
+  font-size: 26px;
+  margin-bottom: 18px;
+  color: var(--fb-blue-900);
+  font-weight: 700;
+}
+.form-group { margin-bottom: 14px; }
+.input {
+  width:100%;
+  padding:12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(16,24,40,0.08);
+  background: rgba(250,250,255,0.9);
+  outline:none;
+  font-size: 15px;
+}
+.input:focus { box-shadow: 0 0 0 4px rgba(24,119,242,0.08); border-color: var(--fb-blue-700); }
+
+.select { appearance:none; padding-right:30px; }
+
+/* Primary button */
+.btn-primary {
+  width:100%;
+  padding:12px;
+  background: var(--fb-blue-700);
+  color:white;
+  border:none;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow: 0 6px 20px rgba(24,119,242,0.18);
+}
+
+/* Dashboard layout */
+.dashboard-grid {
+  display:grid;
+  grid-template-columns: 1fr 340px;
+  gap: 22px;
+  margin-top:18px;
+}
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(16,24,40,0.04);
+}
+.card h3 { margin:0 0 12px 0; color: var(--fb-blue-900); }
+
+/* Presensi style */
+.presensi-actions { display:flex; gap:12px; margin-top:10px; }
+.action-btn {
+  padding:10px 16px;
+  border-radius: 10px;
+  border:none;
+  background: linear-gradient(90deg, var(--fb-blue-900), var(--fb-blue-700));
+  color:white;
+  cursor:pointer;
+  font-weight:700;
+}
+
+/* Report table */
+.table {
+  width:100%;
+  border-collapse: collapse;
+  margin-top:10px;
+}
+.table th {
+  text-align:left;
+  font-weight:700;
+  padding:10px;
+  border-bottom: 1px solid rgba(16,24,40,0.06);
+}
+.table td {
+  padding:10px;
+  border-bottom: 1px dashed rgba(16,24,40,0.04);
+}
+
+/* small screens */
+@media (max-width:900px){
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .auth-card { width: min(92%, 420px); }
+  .nav-center { display:none; } /* simplify navbar on small screens */
+}
