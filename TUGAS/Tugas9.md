@@ -5,8 +5,10 @@
 
 | Keterangan | Screenshot |
 | --- | --- |
-| RegisterPage |<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/17867eb3-a42c-4c69-ba9b-636d84fa8d98" />|
+| newRegister |<img width="1920" height="1140" alt="newRegister" src="https://github.com/user-attachments/assets/3d0241a4-7ca6-441e-b7a1-c8d753866842" />|
 |  |  |
-| LoginPage /register untuk Admin|<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/92a0ed93-d0aa-4802-8b4c-228fd93d7acf" />|
+| newLogin /register untuk Admin|<img width="1920" height="1140" alt="newLogin" src="https://github.com/user-attachments/assets/69c22f7a-9dee-44dc-b0fa-2ff743702919" />|
 |  |  |
-| DashboardPage |<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/45de5f61-0b99-44b9-b94b-f6703eb42cfe" />|
+| Check-in |<img width="1920" height="1140" alt="Check-in" src="https://github.com/user-attachments/assets/3ef581a0-405e-42dd-be76-80ffde692286" />|
+|  |  |
+| Check-out |<img width="1920" height="1140" alt="Check-out" src="https://github.com/user-attachments/assets/ecf6050c-bc08-4ef2-befc-dc82abafc327" />|
