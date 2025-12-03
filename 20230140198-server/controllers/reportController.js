@@ -1,31 +1,42 @@
-const { Presensi } = require("../models");
-const { format } = require("date-fns-tz");
+"use strict";
+
+const { Presensi, User } = require("../models");
 const { Op } = require("sequelize");
 const timeZone = "Asia/Jakarta";
 
 exports.getDailyReport = async (req, res) => {
     try {
-        const { nama, tanggal } = req.query; // Contoh: ?nama=Yasin&tanggal=2025-11-01
-        let options = { where: {} };
+        const { nama, tanggal } = req.query;
 
-        // Filter berdasarkan nama 
+        let options = {
+        where: {},
+        include: [
+            {
+            model: User,
+            as: "user", // ⚠️ Tambahkan alias sesuai model
+            attributes: ["nama", "email", "role"], 
+            },
+        ],
+        order: [["checkIn", "DESC"]],
+        };
+
+        // Filter berdasarkan nama user
         if (nama) {
-        options.where.nama = {
-            [Op.like]: `%${nama}%`,
+        options.include[0].where = {
+            nama: { [Op.like]: `%${nama}%` },
         };
         }
 
-        // Filter berdasarkan tanggal 
+        // Filter berdasarkan tanggal
         if (tanggal) {
-        const startOfDay = new Date(`${tanggal}T00:00:00.000Z`);
-        const endOfDay = new Date(`${tanggal}T23:59:59.999Z`);
-        options.where.checkIn = { [Op.between]: [startOfDay, endOfDay] };
+        const startOfDay = new Date(`${tanggal}T00:00:00+07:00`);
+        const endOfDay = new Date(`${tanggal}T23:59:59+07:00`);
+
+        options.where.checkIn = {
+            [Op.between]: [startOfDay, endOfDay],
+        };
         }
 
-        // Urutkan dari checkIn terbaru
-        options.order = [["checkIn", "DESC"]];
-
-        // Ambil data dari database
         const records = await Presensi.findAll(options);
 
         if (records.length === 0) {
@@ -34,15 +45,14 @@ exports.getDailyReport = async (req, res) => {
         });
         }
 
-        // Format tanggal laporan (1/11/2025)
         const reportDate = new Date().toLocaleDateString("id-ID", { timeZone });
 
-        // Kirim hasil sesuai format yang kamu mau
         res.json({
-        reportDate: reportDate,
+        reportDate,
         total: records.length,
-        data: records, // biarkan data mentah tanpa format waktu agar seperti contohmu
+        data: records, 
         });
+
     } catch (error) {
         res.status(500).json({
         message: "Gagal mengambil laporan presensi.",
