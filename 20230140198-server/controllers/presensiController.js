@@ -21,10 +21,11 @@ exports.CheckIn = async (req, res) => {
             .json({ message: "Anda sudah melakukan check-in hari ini." });
         }
 
-        // 4. Ubah cara membuat data baru menggunakan 'create' dari Sequelize
         const newRecord = await Presensi.create({
             userId: userId,
             nama: userName,
+            latitude: latitude,
+            longitude: longitude,
             checkIn: waktuSekarang,
         });
 

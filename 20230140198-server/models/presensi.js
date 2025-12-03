@@ -22,16 +22,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    checkIn: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
     latitude: {
         type: DataTypes.DECIMAL(10, 7),
         allowNull: false,
     },
     longitude: {
       type: DataTypes.DECIMAL(10, 7),
-      allowNull: false,
-    },
-    checkIn: {
-      type: DataTypes.DATE,
       allowNull: false,
     },
     checkOut: {
