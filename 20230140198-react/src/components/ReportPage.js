@@ -7,6 +7,8 @@ function ReportPage() {
   const [reports, setReports] = useState([]);
   const [error, setError] = useState(null);
   const [searchName, setSearchName] = useState("");
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
 
   const token = localStorage.getItem("token");
 
@@ -52,12 +54,58 @@ function ReportPage() {
     fetchReports(searchName);
   };
 
+  const photoModal = selectedPhoto && (
+    <div 
+      style={{
+        position: "fixed",
+        top: 0, left: 0, right: 0, bottom: 0,
+        background: "rgba(0,0,0,0.6)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 999
+      }}
+      onClick={() => setSelectedPhoto(null)}
+    >
+      <div style={{ position: "relative" }}>
+        <img 
+          src={`http://localhost:3001/${selectedPhoto}`} 
+          alt="Foto Presensi" 
+          style={{
+            maxWidth: "90vw",
+            maxHeight: "90vh",
+            borderRadius: 8,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.5)"
+          }}
+        />
+        <button 
+          onClick={() => setSelectedPhoto(null)}
+          style={{
+            position: "absolute",
+            top: -10,
+            right: -10,
+            background: "#2563eb",
+            border: "none",
+            color: "white",
+            padding: "6px 10px",
+            borderRadius: "50%",
+            cursor: "pointer",
+            fontWeight: "bold"
+          }}
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="app-container">
+      {photoModal}
       {/* Header Section */}
       <div style={{ marginBottom: 24 }}>
         <h2 style={{color : "#555", marginTop: 0, marginBottom: 4, fontSize: '24px', fontWeight: 700 }}>
-           Laporan Presensi
+            Laporan Presensi
         </h2>
       </div>
 
@@ -93,6 +141,7 @@ function ReportPage() {
                 <th>Waktu Check-In</th>
                 <th>Waktu Check-Out</th>
                 <th>Lokasi (Lat, Lng)</th>
+                <th>Bukti Foto</th>
               </tr>
             </thead>
 
@@ -120,6 +169,25 @@ function ReportPage() {
 
                       <td style={{ fontFamily: 'monospace', fontSize: 12 }}>
                         {formatCoord(item.latitude)}, {formatCoord(item.longitude)}
+                      </td>
+                      <td>
+                        {item.Foto ? (
+                          <img 
+                            src={`http://localhost:3001/${item.Foto}`}
+                            alt="Bukti"
+                            onClick={() => setSelectedPhoto(item.Foto)}
+                            style={{
+                              width: 60,
+                              height: 60,
+                              objectFit: "cover",
+                              borderRadius: 6,
+                              cursor: "pointer",
+                              border: "1px solid #ddd"
+                            }}
+                          />
+                        ) : (
+                          <span style={{color:"#aaa"}}>Tidak ada foto</span>
+                        )}
                       </td>
                     </tr>
                   );

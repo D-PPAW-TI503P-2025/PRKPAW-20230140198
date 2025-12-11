@@ -67,19 +67,47 @@ function dataURLtoFile(dataurl, filename) {
   }, []);
 
   const handlePresensi = async (type) => {
-    if (!coords && type === "check-in") return setError("Tunggu lokasi ditemukan...");
+    if (!coords && type === "check-in") 
+        return setError("Tunggu lokasi ditemukan...");
+
     try {
-      const data = type === "check-in" ? { latitude: coords.lat, longitude: coords.lng } : {};
       const url = `http://localhost:3001/api/presensi/${type}`;
-      
-      const res = await axios.post(url, data, { headers: { Authorization: `Bearer ${token}` } });
+      let payload;
+      let headers = { Authorization: `Bearer ${token}` };
+
+      if (type === "check-in") {
+        if (!photoURL) return setError("Ambil foto dulu!");
+
+        // Ubah base64 foto kamera → File
+        const fotoFile = dataURLtoFile(photoURL, "foto.jpg");
+
+        payload = new FormData();
+        payload.append("latitude", coords.lat);
+        payload.append("longitude", coords.lng);
+        payload.append("image", fotoFile);
+
+        headers["Content-Type"] = "multipart/form-data";
+      } else {
+        payload = {};
+      }
+
+      const res = await axios.post(url, payload, { headers });
+
       setMessage(res.data.message);
       setError("");
       setPhotoURL(null);
+      startCamera();
+
     } catch (err) {
-      setError(err.response?.data?.message || "Gagal memproses data");
+      setError(
+      err.response?.data?.message ||
+      err.response?.data ||
+      "Gagal memproses data"
+);
+
     }
   };
+
 
   const customIcon = new L.Icon({
     // Menggunakan gambar pin merah dari repository leaflet-color-markers
