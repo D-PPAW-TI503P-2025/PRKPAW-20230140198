@@ -41,15 +41,14 @@ exports.CheckIn = async (req, res) => {
         });
         }
 
-        // ⚡ Gunakan nama field yang sama dengan router: 'buktiFoto'
-        const buktiFoto = req.file ? req.file.path : null;
+        const Foto = req.file ? req.file.path : null;
 
         const newRecord = await Presensi.create({
         userId,
         checkIn: now,
-        latitude: latitude || null,
-        longitude: longitude || null,
-        buktiFoto,
+        latitude: latitude,
+        longitude: longitude,
+        Foto,
         });
 
         return res.status(201).json({
@@ -61,11 +60,11 @@ exports.CheckIn = async (req, res) => {
             checkOut: null,
             latitude: newRecord.latitude,
             longitude: newRecord.longitude,
-            buktiFoto: newRecord.buktiFoto,
+            Foto: newRecord.Foto,
         },
         });
     } catch (error) {
-        console.error("Error CheckIn:", error); // ⚡ Logging supaya bisa tahu kenapa gagal
+        console.error("Error CheckIn:", error); 
         return res.status(500).json({
         message: "Terjadi kesalahan server",
         error: error.message,
@@ -138,7 +137,7 @@ exports.deletePresensi = async (req, res) => {
         }
 
         // Hapus file foto jika ada
-        if (record.buktiFoto && fs.existsSync(record.buktiFoto)) fs.unlinkSync(record.buktiFoto);
+        if (record.Foto && fs.existsSync(record.Foto)) fs.unlinkSync(record.Foto);
 
         await record.destroy();
 
