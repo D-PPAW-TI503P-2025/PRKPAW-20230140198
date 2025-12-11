@@ -25,35 +25,56 @@ const fileFilter = (req, file, cb) => {
 
 exports.upload = multer({ storage: storage, fileFilter: fileFilter });
 
-// Update Fungsi CheckIn
 exports.CheckIn = async (req, res) => {
     try {
-        const { id: userId, nama: userName } = req.user;
+        const { id: userId } = req.user;
         const { latitude, longitude } = req.body;
-    
-        const buktiFoto = req.file ? req.file.path : null; 
+        const now = new Date();
 
-        // ... (Validasi existing record dll tetap sama) ...
+        const existingRecord = await Presensi.findOne({
+        where: { userId, checkOut: null },
+        });
+
+        if (existingRecord) {
+        return res.status(400).json({
+            message: "Anda sudah check-in dan belum check-out.",
+        });
+        }
+
+        // ⚡ Gunakan nama field yang sama dengan router: 'buktiFoto'
+        const buktiFoto = req.file ? req.file.path : null;
 
         const newRecord = await Presensi.create({
         userId,
-        checkIn: new Date(),
-        latitude,
-        longitude,
-        buktiFoto: buktiFoto // Simpan path foto
+        checkIn: now,
+        latitude: latitude || null,
+        longitude: longitude || null,
+        buktiFoto,
         });
 
-        // ... (Response sukses) ...
+        return res.status(201).json({
+        message: `Check-in berhasil pada pukul ${format(now, "HH:mm:ss", { timeZone })} WIB`,
+        data: {
+            id: newRecord.id,
+            userId: newRecord.userId,
+            checkIn: format(newRecord.checkIn, "yyyy-MM-dd HH:mm:ssXXX", { timeZone }),
+            checkOut: null,
+            latitude: newRecord.latitude,
+            longitude: newRecord.longitude,
+            buktiFoto: newRecord.buktiFoto,
+        },
+        });
     } catch (error) {
-        res
-        .status(500)
-        .json({ message: "Terjadi kesalahan pada server", error: error.message });
+        console.error("Error CheckIn:", error); // ⚡ Logging supaya bisa tahu kenapa gagal
+        return res.status(500).json({
+        message: "Terjadi kesalahan server",
+        error: error.message,
+        });
     }
 };
 
 
 exports.CheckOut = async (req, res) => {
-  // Gunakan try...catch
     try {
         const { id: userId, nama: userName } = req.user;
         const waktuSekarang = new Date();
@@ -99,31 +120,39 @@ exports.CheckOut = async (req, res) => {
     }
 };
 
+
+// Hapus presensiController.js
 exports.deletePresensi = async (req, res) => {
     try {
-        const { id: userId } = req.user;
+        const { id: userId, role } = req.user;
         const presensiId = req.params.id;
-        const recordToDelete = await Presensi.findByPk(presensiId);
 
-        if (!recordToDelete) {
-        return res
-            .status(404)
-            .json({ message: "Catatan presensi tidak ditemukan." });
+        const record = await Presensi.findByPk(presensiId);
+        if (!record)
+        return res.status(404).json({ message: "Catatan presensi tidak ditemukan." });
+
+        if (role === "mahasiswa" && record.userId !== userId) {
+        return res.status(403).json({
+            message: "Akses ditolak. Anda tidak memiliki izin.",
+        });
         }
-        if (recordToDelete.userId !== userId) {
-        return res
-            .status(403)
-            .json({ message: "Akses ditolak: Anda bukan pemilik catatan ini." });
-        }
-        await recordToDelete.destroy();
-        res.status(200).json({message: "Data Berhasil Dihapus"});
+
+        // Hapus file foto jika ada
+        if (record.buktiFoto && fs.existsSync(record.buktiFoto)) fs.unlinkSync(record.buktiFoto);
+
+        await record.destroy();
+
+        return res.status(200).json({ message: "Data presensi berhasil dihapus." });
     } catch (error) {
-        res
-        .status(500)
-        .json({ message: "Terjadi kesalahan pada server", error: error.message });
-      }
+        return res.status(500).json({
+        message: "Terjadi kesalahan server",
+        error: error.message,
+        });
+    }
 };
 
+
+// Update presensiController.js
 exports.updatePresensi = async (req, res) => {
     try {
         const presensiId = req.params.id;
