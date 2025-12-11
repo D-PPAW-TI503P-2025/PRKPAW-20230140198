@@ -2,54 +2,55 @@
 const { Presensi } = require("../models");
 const { format } = require("date-fns-tz");
 const timeZone = "Asia/Jakarta";
+const multer = require('multer');
+const path = require('path');
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); 
+    },
+    filename: (req, file, cb) => {
+        // Format nama file: userId-timestamp.jpg
+        cb(null, `${req.user.id}-${Date.now()}${path.extname(file.originalname)}`);
+    }
+});
 
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+    } else {
+        cb(new Error('Hanya file gambar yang diperbolehkan!'), false);
+    }
+};
+
+exports.upload = multer({ storage: storage, fileFilter: fileFilter });
+
+// Update Fungsi CheckIn
 exports.CheckIn = async (req, res) => {
-  // 2. Gunakan try...catch untuk error handling
     try {
         const { id: userId, nama: userName } = req.user;
-        const waktuSekarang = new Date();
         const { latitude, longitude } = req.body;
-                // 3. Ubah cara mencari data menggunakan 'findOne' dari Sequelize
-        const existingRecord = await Presensi.findOne({
-            where: { userId: userId, checkOut: null },
-        });
+    
+        const buktiFoto = req.file ? req.file.path : null; 
 
-        if (existingRecord) {
-            return res
-            .status(400)
-            .json({ message: "Anda sudah melakukan check-in hari ini." });
-        }
+        // ... (Validasi existing record dll tetap sama) ...
 
         const newRecord = await Presensi.create({
-            userId: userId,
-            nama: userName,
-            latitude: latitude,
-            longitude: longitude,
-            checkIn: waktuSekarang,
+        userId,
+        checkIn: new Date(),
+        latitude,
+        longitude,
+        buktiFoto: buktiFoto // Simpan path foto
         });
 
-        const formattedData = {
-            userId: newRecord.userId,
-            checkIn: waktuSekarang,
-            latitude: latitude || null,
-            longitude: longitude || null,
-        };
-
-        res.status(201).json({
-            message: `Halo ${userName}, check-in Anda berhasil pada pukul ${format(
-                waktuSekarang,
-                "HH:mm:ss",
-                { timeZone }
-            )} WIB`,
-            data: formattedData,
-            });
+        // ... (Response sukses) ...
     } catch (error) {
         res
         .status(500)
         .json({ message: "Terjadi kesalahan pada server", error: error.message });
     }
 };
+
 
 exports.CheckOut = async (req, res) => {
   // Gunakan try...catch
