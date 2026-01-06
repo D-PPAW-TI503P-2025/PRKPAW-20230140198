@@ -11,6 +11,8 @@ const reportRoutes = require("./routes/reports");
 const ruteBuku = require("./routes/books");
 const authRoutes = require("./routes/auth");
 
+const iotRoutes = require("./routes/iot");
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -29,6 +31,8 @@ app.use("/api/books", ruteBuku);
 app.use("/api/presensi", presensiRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/auth", authRoutes);
+
+app.use("/api/iot", iotRoutes);
 
 // Static folder untuk mengakses foto yang diunggah
 const path = require("path");
