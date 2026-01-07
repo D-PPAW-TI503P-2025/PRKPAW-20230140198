@@ -3,4 +3,12 @@ const router = express.Router();
 const iotController = require('../controllers/iotController');
 
 router.post('/ping', iotController.testConnection);
+// Endpoint penerima data sensor
+// URL: http://localhost:3001/api/iot/data
+router.post('/data', iotController.receiveSensorData);
+
+// routes/iot.js
+router.get('/history', iotController.getSensorHistory);
+
+
 module.exports = router;

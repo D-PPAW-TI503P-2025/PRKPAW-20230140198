@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import DashboardPage from "./components/DashboardPage";
-
+import SensorPage from "./components/SensorPage";
 import Navbar from "./components/Navbar";
 import PresensiPage from "./components/PresensiPage";
 import ReportPage from "./components/ReportPage";
@@ -22,6 +22,10 @@ function App() {
 
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/presensi" element={<PresensiPage />} />
+
+        
+        
+        <Route path="/monitoring" element={<SensorPage />} />
 
         <Route path="/reports" element={<ReportPage />} />
       </Routes>

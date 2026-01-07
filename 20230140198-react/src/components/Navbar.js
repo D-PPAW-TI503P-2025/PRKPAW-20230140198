@@ -31,6 +31,7 @@ const Navbar = () => {
         <div className="nav-center" role="menubar">
           <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Dashboard</Link>
           <Link to="/presensi" className={location.pathname === '/presensi' ? 'active' : ''}>Presensi</Link>
+          <Link to="/monitoring" className={location.pathname === '/monitoring' ? 'active' : ''}>Monitoring Suhu</Link>
           {user && user.role === "admin" && <Link to="/reports">Laporan</Link>}
         </div>
 
