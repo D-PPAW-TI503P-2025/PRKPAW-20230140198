@@ -1,10 +1,12 @@
 # LAPORAN PRAKTIKUM 13 PAW 
 > Nama  : Latfiansya Dzikri\
 > NIM   : 20230140198\
-> Kelas : D
+> Kelas : D\
+> Analisis: Interval waktunya sesuai dengan delay(5000) di Arduino
 
 | Keterangan | Screenshot |
 | --- | --- |
-| Tampilan Report | <img width="1114" height="952" alt="image" src="https://github.com/user-attachments/assets/ac0c14d4-bc02-4e65-8114-971d038c685d" />|
-| Tampilan Pop Up Foto | <img width="1113" height="1010" alt="image" src="https://github.com/user-attachments/assets/a005ce79-c169-4ad7-b3de-f7ee7bbe4718" />|
-| Database | <img width="1604" height="540" alt="image" src="https://github.com/user-attachments/assets/cab2c3d8-6683-4636-9eb8-2d393a5ae170" />|
+| Respon Arduino | ![WhatsApp Image 2026-01-07 at 11 47 04](https://github.com/user-attachments/assets/9e1a9828-5109-45c3-b8b5-18a435a9e259)
+| Respon Server | ![WhatsApp Image 2026-01-07 at 10 21 06 (1)](https://github.com/user-attachments/assets/565ab7dd-8a73-4b98-aa9f-0d1317224042)
+| Database | <img width="1581" height="1063" alt="image" src="https://github.com/user-attachments/assets/2ba295ee-2a80-45d4-b7af-c94efbf54830" />
+
