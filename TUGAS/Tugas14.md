@@ -5,6 +5,6 @@
 
 | Keterangan | Screenshot |
 | --- | --- |
-| Tampilan Report | <img width="1114" height="952" alt="image" src="https://github.com/user-attachments/assets/ac0c14d4-bc02-4e65-8114-971d038c685d" />|
-| Tampilan Pop Up Foto | <img width="1113" height="1010" alt="image" src="https://github.com/user-attachments/assets/a005ce79-c169-4ad7-b3de-f7ee7bbe4718" />|
-| Database | <img width="1604" height="540" alt="image" src="https://github.com/user-attachments/assets/cab2c3d8-6683-4636-9eb8-2d393a5ae170" />|
+| Tampilan Report | ![WhatsApp Image 2026-01-07 at 11 53 45](https://github.com/user-attachments/assets/2112f6f0-1e26-464b-a223-0408070bf528)
+| Database | ![WhatsApp Image 2026-01-07 at 12 26 26](https://github.com/user-attachments/assets/4b51a43e-09a9-42db-9949-df6a748a78f0)
+
